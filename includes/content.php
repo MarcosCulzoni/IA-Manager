@@ -6,6 +6,23 @@ if (!defined('ABSPATH')) {
 // Obtener opciones actuales
 $opciones_actuales = recuperar_opciones();
 
+
+
+//Obtener la URL de la página de configuración
+$pagina_id = get_option('IA_Manager_Config_ID');
+$pagina_url = get_permalink($pagina_id);
+if ($pagina_url) {
+    wp_redirect($pagina_url);
+    exit;
+} else {
+    echo 'No se pudo encontrar la página de configuración.';
+}
+
+
+
+
+
+
 function recuperar_opciones()
 {
     // Recupera la opción 'ia_manager_options' desde la base de datos.
@@ -26,7 +43,7 @@ function recuperar_opciones()
 }
 ?>
 
-<form method="POST" action="<?php echo esc_url(admin_url('gracias')); ?>">
+<form method="POST" action="<?php echo esc_url(admin_url('admin-post.php')); ?>">
     <input type="hidden" name="action" value="guardar_mi_plugin_opciones">
     <?php wp_nonce_field('guardar_mi_plugin_opciones_nonce', 'mi_plugin_nonce'); ?>
 
