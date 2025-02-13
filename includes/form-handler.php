@@ -11,9 +11,9 @@ function mi_plugin_guardar_opciones() {
     }
 
     // Verificar permisos del usuario
-    if (!current_user_can('manage_options')) {
+   /* if (!current_user_can('manage_options')) {
         wp_die('No tienes permisos suficientes');
-    }
+    }*/
 
     // Procesar los datos del formulario
     $opciones = [
@@ -24,15 +24,19 @@ function mi_plugin_guardar_opciones() {
         'site_activity_description' => sanitize_textarea_field($_POST['site_activity_description']),
     ];
 
-    update_option('mi_plugin_opciones', $opciones);
+    update_option('ia_manager_options', $opciones);
 
-    // Redirigir con mensaje de éxito
-    //wp_redirect(admin_url('admin.php?page=mi-plugin&mensaje=guardado'));
-    //exit;
+     //Redirigir con mensaje de éxito
+    /*wp_redirect(admin_url('admin.php?page=mi-plugin&mensaje=guardado'));
+    exit;*/
 
-
-    wp_redirect(home_url());
+    wp_redirect(home_url('/gracias/'));
     exit;
+
+
+
+    //wp_redirect(home_url());
+    //exit;
 
 }
 add_action('admin_post_guardar_mi_plugin_opciones', 'mi_plugin_guardar_opciones');

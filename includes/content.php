@@ -26,7 +26,7 @@ function recuperar_opciones()
 }
 ?>
 
-<form method="POST" action="<?php echo esc_url(admin_url('admin-post.php')); ?>">
+<form method="POST" action="<?php echo esc_url(admin_url('gracias')); ?>">
     <input type="hidden" name="action" value="guardar_mi_plugin_opciones">
     <?php wp_nonce_field('guardar_mi_plugin_opciones_nonce', 'mi_plugin_nonce'); ?>
 
