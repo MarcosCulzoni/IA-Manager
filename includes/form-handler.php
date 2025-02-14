@@ -27,17 +27,32 @@ function mi_plugin_guardar_opciones() {
     update_option('ia_manager_options', $opciones);
 
      //Redirigir con mensaje de éxito
-    /*wp_redirect(admin_url('admin.php?page=mi-plugin&mensaje=guardado'));
-    exit;*/
-
-    wp_redirect(home_url('/gracias/'));
-    exit;
-
-
-
-    //wp_redirect(home_url());
+    //wp_redirect(admin_url('admin.php?page=mi-plugin&mensaje=guardado'));
     //exit;
 
+    
+
+
+// Obtener la URL de la página de configuración
+$pagina_id = get_option('IA_Manager_Config_ID');
+$pagina_url = get_permalink($pagina_id);
+
+if ($pagina_url) {
+    // Redirigir con un parámetro indicando el estado
+    wp_redirect(add_query_arg('status', 'success', $pagina_url));
+    exit;
+} else {
+    echo 'No se pudo encontrar la página de configuración.';
+    exit;
 }
+
+
+
+
+
+}
+
+/*se registra un "hook" en WordPress que ejecutará la función mi_plugin_guardar_opciones() cuando se reciba
+ una solicitud POST con el parámetro action=guardar_mi_plugin_opciones.*/
 add_action('admin_post_guardar_mi_plugin_opciones', 'mi_plugin_guardar_opciones');
 ?>

@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: AI Manager
+Plugin Name: IA_Manager
 Description: Gestión de claves API de IA con funciones avanzadas para consultas y generación de texto.
 Version: 1.0
 Author: Marcos Culzoni
@@ -10,6 +10,21 @@ if (!defined('ABSPATH')) {
     exit; // Seguridad
 }
 
+
+
+//Se registran y encolan correctamente el archivo CSS 
+function mi_plugin_registrar_estilos() {
+    wp_enqueue_style(
+        'mi-plugin-estilos', // Identificador único
+        plugin_dir_url(__FILE__) . 'assets/css/IA_Manager.css', // Ruta al archivo CSS
+        array(), // Dependencias
+        '1.0.0', // Versión
+        'all' // Media
+    );
+}
+
+add_action('admin_enqueue_scripts', 'mi_plugin_registrar_estilos');
+add_action('wp_enqueue_scripts', 'mi_plugin_registrar_estilos'); // Si también se usa en el frontend
 
 
 
@@ -37,16 +52,18 @@ ejecuta hasta que está activado. Sin embargo, puedes usar el hook register_acti
 pondre valores por defecto o que ya esten los datos porque el plugin se ha desactivado pero no borrado en ese caso los valores ya 
 estan y tengo que recuperarlos */
 
-
-
+// Estoy activand el código del handler, que crea el hook que se ejecuta cuando se preciona el boton del formulairo
+include_once plugin_dir_path(__FILE__) . 'includes/form-handler.php';
 
 
 
 function crear_pagina_configuracion()
 {
+    //incluyo el manejador del formulario
+    //include_once plugin_dir_path(__FILE__) . 'includes/form-handler.php';
     // Función para crear la página automáticamente cuando se activa el plugin
 
-    $titulo = 'WP IA Mánager Configuración General'; // Nombre largo y específico para evitar coincidencias
+    $titulo = 'WP IA Manager Configuración General'; // Nombre largo y específico para evitar coincidencias
     $slug   = 'wp_ia_manager_configuracion_general';   // Slug único para evitar duplicados
 
     // Si ya existe una página con este slug se eliminará
@@ -70,7 +87,7 @@ function crear_pagina_configuracion()
         error_log('Error al insertar el post: ' . $pagina_id->get_error_message());
     } else {
         // Guardar el ID de la página en las opciones de WordPress
-        update_option('pagina_configuracion_id', $pagina_id);
+        update_option('IA_Manager_Config_ID', $pagina_id);
     }
 }
 
@@ -107,7 +124,7 @@ register_activation_hook(__FILE__, 'IA_manager_activation'); //hook para crear l
 function eliminar_pagina_configuracion()
 {
     // Obtener el ID de la página de configuración almacenado en las opciones de WordPress
-    $pagina_id = get_option('pagina_configuracion_id');
+    $pagina_id = get_option('IA_Manager_Config_ID');
 
     // Verificar que se haya obtenido un ID válido
     if ($pagina_id) {
@@ -120,10 +137,10 @@ function eliminar_pagina_configuracion()
             error_log("No se encontró la página de configuración con ID: $pagina_id.");
         }
         // Eliminar la opción para limpiar la base de datos
-        delete_option('pagina_configuracion_id');
+        delete_option('IA_Manager_Config_ID');
     } else {
         // Si la opción no existe, registrar un mensaje en el log
-        error_log("No existe la opción 'pagina_configuracion_id' en la base de datos.");
+        error_log("No existe la opción 'IA_Manager_Config_ID' en la base de datos.");
     }
 }
 
